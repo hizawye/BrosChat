@@ -21,7 +21,8 @@ export const Chat = () => {
     }
   }, []);
 
-  const messagesContainerRef = useRef(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
   const [showAuthor, setShowAuthor] = useState(true);
   useEffect(() => {
     const container = messagesContainerRef.current;
