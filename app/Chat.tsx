@@ -93,9 +93,7 @@ export const Chat = () => {
 
           return (
             <div key={message._id} className="mb-2">
-              {!isSameAuthorAsPrevious && showAuthor && (
-                <p className="font-thin text-sm">{message.author}</p>
-              )}
+              {<p className="font-thin text-sm">{message.author}</p>}
               <p
                 title={`sender: ${message.author}`}
                 className="bg-emerald-700 p-2 rounded-sm inline-block bg-opacity-10 w-full"
