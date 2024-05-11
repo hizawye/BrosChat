@@ -85,7 +85,7 @@ export const Chat = () => {
       {showNamePopup && namePopup}
       <div
         ref={messagesContainerRef}
-        className="sent-messages bg-gray-800 overflow-y-auto flex flex-col p-4 rounded-t-lg"
+        className="sent-messages bg-gray-800 h-full overflow-y-auto flex flex-col p-4 rounded-t-lg"
       >
         {messages?.map((message, index) => {
           const isSameAuthorAsPrevious =
