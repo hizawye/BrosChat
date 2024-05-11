@@ -79,7 +79,22 @@ export const Chat = () => {
       </div>
     </div>
   );
+  function getColorForAuthor(author) {
+    // Generate a consistent color based on the author's name
+    const hash = author
+      .toLowerCase()
+      .split("")
+      .reduce((acc, char) => {
+        return (acc * 31 + char.charCodeAt(0)) % 360;
+      }, 0);
 
+    // Convert the hash to an HSL color
+    const hue = hash;
+    const saturation = "70%";
+    const lightness = "50%";
+
+    return `hsl(${hue}, ${saturation}, ${lightness})`;
+  }
   return (
     <div className="flex flex-col h-screen justify-end">
       {showNamePopup && namePopup}
@@ -91,9 +106,15 @@ export const Chat = () => {
           const isSameAuthorAsPrevious =
             index > 0 && message.author === messages[index - 1].author;
 
+          const authorColor =
+            message.author.toLowerCase() === " rahim "
+              ? "red"
+              : getColorForAuthor(message.author);
           return (
             <div key={message._id} className="mb-2">
-              {<p className="font-thin text-sm">{message.author}</p>}
+              <p className="font-thin text-sm" style={{ color: authorColor }}>
+                {message.author}
+              </p>
               <p
                 title={`sender: ${message.author}`}
                 className="bg-emerald-700 p-2 rounded-sm inline-block bg-opacity-10 w-full"
