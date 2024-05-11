@@ -105,7 +105,7 @@ export const Chat = () => {
         })}
       </div>
 
-      <div className="send-message p-4 bg-gray-900 rounded-b-lg">
+      <div className="send-message sticky bottom-0  w-full p-4 bg-gray-900 rounded-b-lg">
         <form
           onSubmit={handleOnSubmit}
           className="flex flex-row gap-2 justify-between"
