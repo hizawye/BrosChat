@@ -79,12 +79,12 @@ export const Chat = () => {
       </div>
     </div>
   );
-  function getColorForAuthor(author) {
+  function getColorForAuthor(author: any) {
     // Generate a consistent color based on the author's name
     const hash = author
       .toLowerCase()
       .split("")
-      .reduce((acc, char) => {
+      .reduce((acc: any, char: any) => {
         return (acc * 31 + char.charCodeAt(0)) % 360;
       }, 0);
 
