@@ -96,7 +96,7 @@ export const Chat = () => {
     return `hsl(${hue}, ${saturation}, ${lightness})`;
   }
   return (
-    <div className="fixed flex flex-col h-screen justify-end">
+    <div className="fixed flex flex-col h-full w-full justify-end">
       {showNamePopup && namePopup}
       <div
         ref={messagesContainerRef}
