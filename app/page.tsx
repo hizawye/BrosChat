@@ -3,8 +3,8 @@ import { Chat } from "./Chat";
 
 export default function Home() {
   return (
-    <div className="flex justify-center ">
-      <div className="md:w-1/2">
+    <div className="">
+      <div className="md:flex md:items-center md:justify-center">
         <Chat />
       </div>
     </div>
