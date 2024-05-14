@@ -2,6 +2,7 @@
 import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import React, { FormEvent, useState, useRef, useEffect } from "react";
+import { Header } from "./Header";
 
 export const Chat = () => {
   const [message, setMessage] = useState("");
@@ -98,6 +99,7 @@ export const Chat = () => {
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden md:w-1/2 md:static md:h-screen">
       {showNamePopup && namePopup}
+      <Header />
       <div
         ref={messagesContainerRef}
         className="sent-messages bg-gray-800 h-full overflow-y-auto flex flex-col p-4 rounded-t-lg"

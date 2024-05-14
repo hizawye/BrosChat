@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Chat } from "./Chat";
-
+import { Header } from "./Header";
 export default function Home() {
   return (
     <div className="">
