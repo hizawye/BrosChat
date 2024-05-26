@@ -21,3 +21,15 @@ export const getMessages = query({
     return await ctx.db.query("messages").collect();
   },
 });
+
+export const getAuthor = query({
+  // Validators for arguments.
+  args: {},
+  // Query implementation.
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    // return (await ctx.auth.getUserIdentity())?.name ?? null;
+    return identity?.name;
+  },
+});

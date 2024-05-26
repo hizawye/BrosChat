@@ -1,8 +1,15 @@
 "use client";
 import { api } from "@/convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
+import {
+  Authenticated,
+  Unauthenticated,
+  useMutation,
+  useQuery,
+} from "convex/react";
 import React, { FormEvent, useState, useRef, useEffect } from "react";
+import { SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
 import { Header } from "./Header";
+import { UserProfile } from "@clerk/nextjs";
 
 export const Chat = () => {
   const [message, setMessage] = useState("");
@@ -10,6 +17,8 @@ export const Chat = () => {
   const messages = useQuery(api.messages.getMessages);
   const [showNamePopup, setShowNamePopup] = useState(true);
   const [author, setAuthor] = useState(""); // Initial author state is empty
+
+  const realAuthor = useQuery(api.messages.getAuthor);
 
   // useEffect to handle sessionStorage and initial author
   useEffect(() => {
@@ -59,24 +68,14 @@ export const Chat = () => {
 
   const namePopup = (
     <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-gray-700 p-8 rounded-lg">
-        <h2 className="text-xl font-bold mb-4">Choose a username:</h2>
-        <form onSubmit={handleNameSubmit}>
-          <input
-            type="text"
-            id="nameInput"
-            className="border text-black border-gray-400 px-3 py-2 rounded-md w-full"
-            required
-          />
-          <div className="flex justify-center">
-            <button
-              type="submit"
-              className="bg-emerald-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            >
-              Chat
-            </button>
-          </div>
-        </form>
+      <div className="bg-gray-700 p-8 rounded-lg flex items-center flex-col">
+        <h2 className="bg-green-900 p-2 rounded-lg text-xl font-bold mb-4">
+          <SignUpButton />
+        </h2>
+
+        <h2 className="bg-green-900 p-2 rounded-lg text-xl font-bold mb-4">
+          <SignInButton />
+        </h2>
       </div>
     </div>
   );
@@ -98,7 +97,7 @@ export const Chat = () => {
   }
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden md:w-1/2 md:static md:h-screen">
-      {showNamePopup && namePopup}
+      <Unauthenticated>{showNamePopup && namePopup}</Unauthenticated>
       <Header />
       <div
         ref={messagesContainerRef}
@@ -115,7 +114,7 @@ export const Chat = () => {
           return (
             <div key={message._id} className="mb-2">
               <p className="font-thin text-sm" style={{ color: authorColor }}>
-                {message.author}
+                {realAuthor}
               </p>
               <p
                 title={`sender: ${message.author}`}
@@ -136,6 +135,8 @@ export const Chat = () => {
           onSubmit={handleOnSubmit}
           className="flex flex-row gap-2 justify-between"
         >
+          <UserButton />
+          <p>{realAuthor}</p>
           <input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
