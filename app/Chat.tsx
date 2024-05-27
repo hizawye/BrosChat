@@ -97,7 +97,7 @@ export const Chat = () => {
   }
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden md:w-1/2 md:static md:h-screen">
-      <Unauthenticated>{showNamePopup && namePopup}</Unauthenticated>
+      <Unauthenticated>{namePopup}</Unauthenticated>
       <Header />
       <div
         ref={messagesContainerRef}
