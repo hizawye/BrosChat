@@ -101,57 +101,58 @@ export const Chat = () => {
     return `hsl(${hue}, ${saturation}, ${lightness})`;
   };
   return (
-    <div className="fixed inset-0 flex flex-col overflow-hidden md:w-1/2 md:static md:h-screen">
+    <div className="fixed inset-0 flex flex-col bg-gray-100 dark:bg-gray-900">
       <Header />
       <Authenticated>
         <div
           ref={messagesContainerRef}
-          className="sent-messages bg-gray-900 h-full overflow-y-auto flex flex-col p-4 rounded-t-lg"
+          className="flex-1 overflow-y-auto p-4 space-y-4"
         >
           {messages?.map((message, index) => {
             const isSameAuthorAsPrevious =
               index > 0 && message.author === messages[index - 1].author;
+            const isCurrentUser = message.author === (user?.firstName || user?.username || user?.primaryEmailAddress?.emailAddress);
 
-            const authorColor =
-              message.author.toLowerCase() === " rahim "
-                ? "red"
-                : getColorForAuthor(message.author);
+            const authorColor = getColorForAuthor(message.author);
+            
             return (
-              <div key={message._id} className="mb-2">
-                <p className="font-thin text-sm" style={{ color: authorColor }}>
-                  {message.author}
-                </p>
-                <p
-                  title={`sender: ${message.author}`}
-                  className="bg-emerald-700 p-2 rounded-sm inline-block bg-opacity-10 w-full"
-                >
-                  {message.message}
-                </p>
-                <p className="font-thin text-sm text-gray-500 text-right">
-                  {new Date(message._creationTime).toLocaleString()}
+              <div key={message._id} 
+                className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}
+              >
+                {(!isSameAuthorAsPrevious || !isCurrentUser) && (
+                  <p className="text-sm font-medium mb-1" style={{ color: authorColor }}>
+                    {message.author}
+                  </p>
+                )}
+                <div className={`max-w-[80%] break-words ${isCurrentUser ? 'bg-emerald-600 text-white' : 'bg-white dark:bg-gray-800 dark:text-white'} rounded-2xl px-4 py-2 shadow-sm`}>
+                  <p>{message.message}</p>
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  {new Date(message._creationTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
               </div>
             );
           })}
         </div>
-
-        <div className="send-message sticky bottom-0  w-full p-4 bg-gray-900 rounded-b-lg">
+        <div className="border-t dark:border-gray-800 bg-white dark:bg-gray-900 p-4">
           <form
             onSubmit={handleOnSubmit}
-            className="flex flex-row gap-2 justify-between"
+            className="max-w-4xl mx-auto flex items-center gap-4"
           >
             <UserButton afterSignOutUrl="/" />
-            <input
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className="w-full border-emerald-900 rounded-md text-emerald-950"
-              placeholder="Type your message..."
-              required
-            />
+            <div className="flex-1 relative">
+              <input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyPress}
+                className="w-full px-4 py-3 rounded-full bg-gray-100 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:focus:ring-emerald-600"
+                placeholder="Type your message..."
+                required
+              />
+            </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-emerald-900 text-white rounded-md"
+              className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-medium transition-colors duration-200"
             >
               Send
             </button>
@@ -159,14 +160,18 @@ export const Chat = () => {
         </div>
       </Authenticated>
       <Unauthenticated>
-        <div className="h-full flex items-center justify-center bg-gray-900">
-          <div className="bg-gray-700 p-8 rounded-lg flex items-center flex-col gap-4">
-            <h2 className="text-xl font-bold mb-4 text-white">Welcome to Bros-Chat</h2>
-            <div className="bg-green-900 p-2 rounded-lg">
-              <SignInButton mode="modal" />
-            </div>
-            <div className="bg-green-900 p-2 rounded-lg">
-              <SignUpButton mode="modal" />
+        <div className="flex-1 flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg max-w-md w-full mx-4">
+            <h2 className="text-2xl font-bold text-center mb-8 dark:text-white">
+              Welcome to BrosChat
+            </h2>
+            <div className="space-y-4">
+              <div className="bg-emerald-600 hover:bg-emerald-700 transition-colors duration-200 p-3 rounded-lg text-center">
+                <SignInButton mode="modal" />
+              </div>
+              <div className="bg-emerald-600 hover:bg-emerald-700 transition-colors duration-200 p-3 rounded-lg text-center">
+                <SignUpButton mode="modal" />
+              </div>
             </div>
           </div>
         </div>
